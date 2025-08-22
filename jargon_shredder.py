@@ -99,7 +99,7 @@ def call_ollama(model: str, prompt: str, temperature: float = 0.2, timeout: int 
     return data.get("response", "").strip()
 
 def main():
-    ap = argparse.ArgumentParser(description="Jargon Shredder 3000 — turn buzzword soup into human words.")
+    ap = argparse.ArgumentParser(description="Jargon Shredder — turn buzzword soup into human words.")
     ap.add_argument("-m", "--model", default="gemma:2b", help="Ollama model name (default: gemma:2b)")
     ap.add_argument("-s", "--style", default="plain", choices=list(STYLE_PROMPTS.keys()), help="Output style")
     ap.add_argument("--no-llm", action="store_true", help="Only run rule-based sweep (no LLM)")
