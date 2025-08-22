@@ -1,11 +1,13 @@
-# Jargon Shredder
+# Bullshit Shredder
 
 Tired of startup buzzword soup?  
-**Jargon Shredder** takes heavy tech-speak and rewrites it into plain, human words.  
+**Bullshit Shredder** takes heavy tech-speak and rewrites it into plain, human words — without losing the facts.  
 
 It works in two steps:
 1. **Rule-based sweep** — replaces common buzzwords with clear synonyms.  
-2. **LLM cleanup** — asks a local [Ollama](https://ollama.com) model (e.g. `gemma:2b`) to rewrite the text in a chosen style.
+2. **LLM cleanup** — asks a local [Ollama](https://ollama.com) model (e.g. `gemma:2b`) to rewrite the text in a chosen style.  
+   - Can run in **faithful mode** (preserve all facts, names, numbers, constraints)  
+   - Or **summary mode** (shorter, more executive-friendly)
 
 ---
 
@@ -15,6 +17,9 @@ It works in two steps:
   - `peasant` → medieval peasant explainer  
   - `grandma` → friendly “explain to grandma” mode  
   - `exec` → crisp executive summary  
+- **Faithful mode** — simplifies but never drops facts (default)  
+- **Summary mode** — concise overview for non-experts  
+- Force-include terms with `--keep` (e.g., HIPAA, MQTT, CE)  
 - Works offline with your local Ollama model (default: `gemma:2b`)  
 - Rule-based fallback if LLM isn’t available  
 - CLI-friendly — pipe in text, or run on files
@@ -35,7 +40,7 @@ It works in two steps:
    python jargon_shredder.py "Our AI-powered federated data enrichment pipeline leverages embeddings to deliver actionable intelligence."
    ```
 
-   **Output (plain mode):**
+   **Output (plain, faithful mode):**
    ```
    We built a system that scrapes data, finds useful info, and alerts you when something important changes.
    ```
@@ -71,10 +76,18 @@ Exec mode →
 ---
 
 ## Options
-- `-s, --style` → output style (`plain`, `peasant`, `grandma`, `exec`)  
-- `-m, --model` → Ollama model (default: `gemma:2b`)  
-- `--no-llm` → run rule-based sweep only (no LLM inference)  
-- `-f, --file` → input from file instead of CLI arg  
+
+```
+-s, --style <plain|peasant|grandma|exec>   Output style (default: plain)
+--mode <faithful|summary>                  Faithful keeps all facts; summary makes it concise
+--maxlen <N>                               Target word cap (default: 120)
+--keep "A,B,C"                             Force-include certain terms (e.g., HIPAA, MQTT)
+-m, --model <name>                         Ollama model (default: gemma:2b)
+--temperature <T>                          LLM temperature (default: 0.2)
+--no-llm                                   Run only rule-based sweep
+--no-facts                                 Skip fact extraction (single-pass rewrite)
+-f, --file <filename>                      Read input text from file
+```
 
 ---
 
@@ -82,6 +95,7 @@ Exec mode →
 - Add a tiny FastAPI web UI  
 - Expand buzzword dictionary with community PRs  
 - Fun “meme modes” (pirate, Shakespeare, hacker 1337)  
+- Optional auto-bot for Reddit/Twitter satire posts  
 
 ---
 
